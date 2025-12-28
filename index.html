@@ -1,10 +1,308 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>DevOps Demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps Demo Application</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.5);
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-success: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphism Background Elements */
+    .bg-glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+      opacity: 0.2;
+      animation: pulse 10s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.2;
+        transform: translateX(-50%) scale(1);
+      }
+
+      100% {
+        opacity: 0.3;
+        transform: translateX(-50%) scale(1.1);
+      }
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      padding: 2rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-badge {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-success);
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-success);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-success);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 0;
+    }
+
+    h1 {
+      font-weight: 800;
+      font-size: 4rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to bottom, #ffffff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      max-width: 800px;
+    }
+
+    p.subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+    }
+
+    /* Version Card */
+    .version-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .version-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .version-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .version-label {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .version-number {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Features Grid */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 5rem;
+      width: 100%;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      text-align: left;
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      padding: 0.5rem;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 0.5rem;
+      color: var(--primary);
+    }
+
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    footer {
+      padding: 2rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.3);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: auto;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Welcome to My App 🚀</h1>
-  <p>This is version 1 of the application.</p>
+
+  <div class="bg-glow"></div>
+
+  <div class="container">
+    <header>
+      <div class="logo">DevOps.Demo</div>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        System Healthy
+      </div>
+    </header>
+
+    <main>
+      <h1>Continuous Delivery<br>Made Simple.</h1>
+      <p class="subtitle">
+        This is a demonstration application for showcasing modern DevOps pipelines.
+        Any changes committed to the repository are automatically built, tested, and deployed here.
+      </p>
+
+      <div class="version-card">
+        <div class="version-label">Current Deployment</div>
+        <div class="version-number">Version 1.0</div>
+      </div>
+
+      <div class="features">
+        <div class="feature-item">
+          <div class="feature-icon">🚀</div>
+          <div class="feature-title">Fast Deployments</div>
+          <div class="feature-desc">Automated workflows ensure rapid delivery from code commit to production
+            environment.</div>
+        </div>
+        <!-- feature-item -->
+        <div class="feature-item">
+          <div class="feature-icon">🛡️</div>
+          <div class="feature-title">Secure & Stable</div>
+          <div class="feature-desc">Integrated security scanning and automated testing for reliable releases.</div>
+        </div>
+        <!-- feature-item -->
+        <div class="feature-item">
+          <div class="feature-icon">📈</div>
+          <div class="feature-title">Scalable Arch</div>
+          <div class="feature-desc">Designed to scale effortlessly with containerization and orchestration.</div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2025 DevOps Demo Inc. All operational metrics nominal.
+    </footer>
+  </div>
+
 </body>
+
 </html>
